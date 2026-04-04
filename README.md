@@ -1,1 +1,1 @@
-# produkti_bg
+# produkti.bg
