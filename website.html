@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Harvest - Farm Fresh Products Near You</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="hero">
+        <nav class="navbar">
+            <div class="logo">🌾 LocalHarvest</div>
+            <ul class="nav-links">
+                <li><a href="#products">Products</a></li>
+                <li><a href="#farmers">Farmers</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav>
+        
+        <div class="hero-content">
+            <h1>Fresh from Local Farms</h1>
+            <p>Discover eggs, meat, and honey from farmers in your region</p>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search products or farmers...">
+                <button onclick="filterProducts()">Search</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="filters">
+        <button class="filter-btn active" onclick="filterCategory('all')">All Products</button>
+        <button class="filter-btn" onclick="filterCategory('eggs')">🥚 Eggs</button>
+        <button class="filter-btn" onclick="filterCategory('meat')">🥩 Meat</button>
+        <button class="filter-btn" onclick="filterCategory('honey')">🍯 Honey</button>
+    </section>
+
+    <main class="container" id="products">
+        <h2>Available Products</h2>
+        <div class="products-grid" id="productsGrid">
+            <!-- Products will be dynamically inserted here -->
+        </div>
+    </main>
+
+    <section class="farmers-section" id="farmers">
+        <h2>Meet Our Farmers</h2>
+        <div class="farmers-grid" id="farmersGrid">
+            <!-- Farmer cards inserted via JS -->
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="logo">🌾 LocalHarvest</div>
+            <p>Connecting communities with local agriculture</p>
+            <p>&copy; 2026 LocalHarvest. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
