@@ -507,9 +507,24 @@ footer {
     .search-box {
         flex-direction: column;
         border-radius: var(--radius);
+        width: 100%; /* Пълна ширина */
+        max-width: none; /* Махни ограничението ако има */
+    }
+    
+    .search-box input {
+        width: 100%;
+        padding: 0.75rem 1rem; /* Малко по-малко хоризонтално padding */
+        font-size: 0.95rem; /* Леко по-малък шрифт */
+        min-width: 0; /* Позволява свиване */
     }
     
     .search-box button {
         border-radius: 8px;
+        width: 100%; /* Бутонът също пълна ширина */
+    }
+    
+    /* Или алтернатива - по-малък placeholder шрифт */
+    .search-box input::placeholder {
+        font-size: 0.9rem;
     }
 }
