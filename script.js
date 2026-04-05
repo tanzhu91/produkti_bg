@@ -1,109 +1,119 @@
-// Sample data for farmers and products
+// Данни за фермери с координати (добавете реални координати)
 const farmers = [
     {
         id: 1,
-        name: "Green Valley Farm",
-        owner: "John Mitchell",
-        location: "North County, 5 miles",
+        name: "Ферма Зелена Долина",
+        owner: "Иван Митев",
+        location: "Северна област, 5 км",
+        coords: { lat: 42.6977, lng: 23.3219 }, // София примерно
         specialties: ["eggs", "honey"],
-        phone: "555-0123"
+        phone: "0888-123-456"
     },
     {
         id: 2,
-        name: "Sunny Ridge Ranch",
-        owner: "Sarah Chen",
-        location: "East Hills, 8 miles",
+        name: "Ранчо Слънчев Рид",
+        owner: "Мария Петрова",
+        location: "Източни хълмове, 8 км",
+        coords: { lat: 42.7339, lng: 25.4858 }, // примерни координати
         specialties: ["meat", "eggs"],
-        phone: "555-0456"
+        phone: "0888-789-012"
     },
     {
         id: 3,
-        name: "Golden Hive Apiary",
-        owner: "Mike Johnson",
-        location: "West Valley, 3 miles",
+        name: "Пчелин Златен Кошер",
+        owner: "Георги Йорданов",
+        location: "Западна долина, 3 км",
+        coords: { lat: 42.5103, lng: 23.3230 },
         specialties: ["honey"],
-        phone: "555-0789"
+        phone: "0888-345-678"
     },
     {
         id: 4,
-        name: "Heritage Meats",
-        owner: "Emma Rodriguez",
-        location: "South Fields, 12 miles",
+        name: "Месокомбинат Традиция",
+        owner: "Елена Стоянова",
+        location: "Южни полета, 12 км",
+        coords: { lat: 42.6368, lng: 23.3953 },
         specialties: ["meat"],
-        phone: "555-0321"
+        phone: "0888-901-234"
     }
 ];
 
 const products = [
     {
         id: 1,
-        name: "Free-Range Organic Eggs",
+        name: "Био яйца от свободни кокошки",
         category: "eggs",
-        farmer: "Green Valley Farm",
-        location: "North County, 5 miles",
-        price: "$6.00/dozen",
+        farmer: "Ферма Зелена Долина",
+        location: "Северна област, 5 км",
+        coords: { lat: 42.6977, lng: 23.3219 },
+        price: "6.00 ев./десетка",
         emoji: "🥚",
-        description: "Pasture-raised happy chickens"
+        description: "Кокошки отгледани на паша"
     },
     {
         id: 2,
-        name: "Wildflower Honey",
+        name: "Мед от бяла акация",
         category: "honey",
-        farmer: "Golden Hive Apiary",
-        location: "West Valley, 3 miles",
-        price: "$12.00/jar",
+        farmer: "Пчелин Златен Кошер",
+        location: "Западна долина, 3 км",
+        coords: { lat: 42.5103, lng: 23.3230 },
+        price: "12.00 eв./буркан",
         emoji: "🍯",
-        description: "Raw, unfiltered local honey"
+        description: "Суров, нефилтриран местен мед"
     },
     {
         id: 3,
-        name: "Grass-Fed Beef",
+        name: "Телешко месо от пасищно отглеждане",
         category: "meat",
-        farmer: "Heritage Meats",
-        location: "South Fields, 12 miles",
-        price: "$8.00/lb",
+        farmer: "Месокомбинат Традиция",
+        location: "Южни полета, 12 км",
+        coords: { lat: 42.6368, lng: 23.3953 },
+        price: "15.00 eв./кг",
         emoji: "🥩",
-        description: "Premium cuts from grass-fed cattle"
+        description: "Премиум телешко от пасищно отглеждане"
     },
     {
         id: 4,
-        name: "Heritage Chicken",
+        name: "Пилешко месо от свободно отглеждане",
         category: "meat",
-        farmer: "Sunny Ridge Ranch",
-        location: "East Hills, 8 miles",
-        price: "$5.00/lb",
+        farmer: "Ранчо Слънчев Рид",
+        location: "Източни хълмове, 8 км",
+        coords: { lat: 42.7339, lng: 25.4858 },
+        price: "12.00 eв./кг",
         emoji: "🍗",
-        description: "Free-range, antibiotic-free"
+        description: "Без антибиотици, свободно отглеждане"
     },
     {
         id: 5,
-        name: "Clover Honey",
+        name: "Мед от детелина",
         category: "honey",
-        farmer: "Green Valley Farm",
-        location: "North County, 5 miles",
-        price: "$10.00/jar",
+        farmer: "Ферма Зелена Долина",
+        location: "Северна област, 5 км",
+        coords: { lat: 42.6977, lng: 23.3219 },
+        price: "10.00 eв./буркан",
         emoji: "🍯",
-        description: "Sweet clover blossom honey"
+        description: "Сладък мед от детелинов цвят"
     },
     {
         id: 6,
-        name: "Farm Fresh Eggs",
+        name: "Пресни фермерски яйца",
         category: "eggs",
-        farmer: "Sunny Ridge Ranch",
-        location: "East Hills, 8 miles",
-        price: "$5.50/dozen",
+        farmer: "Ранчо Слънчев Рид",
+        location: "Източни хълмове, 8 км",
+        coords: { lat: 42.7339, lng: 25.4858 },
+        price: "5.50 eв./десетка",
         emoji: "🥚",
-        description: "Brown eggs from heritage breeds"
+        description: "Кафяви яйца от местни породи"
     }
 ];
 
-// Initialize page
+// Зареждане на страницата
 document.addEventListener('DOMContentLoaded', () => {
     renderProducts(products);
     renderFarmers();
 });
 
-// Render products
+// Показване на продукти
 function renderProducts(productsToRender) {
     const grid = document.getElementById('productsGrid');
     grid.innerHTML = '';
@@ -111,53 +121,77 @@ function renderProducts(productsToRender) {
     productsToRender.forEach(product => {
         const card = document.createElement('div');
         card.className = 'product-card';
+        card.style.cursor = 'pointer';
+        card.onclick = (e) => {
+            // Ако не е кликнат бутона за контакт, отвори картата
+            if (!e.target.classList.contains('contact-btn')) {
+                openGoogleMaps(product.coords.lat, product.coords.lng, product.farmer);
+            }
+        };
+        
         card.innerHTML = `
             <div class="product-image">${product.emoji}</div>
             <div class="product-info">
-                <span class="product-category">${product.category}</span>
+                <span class="product-category">${getCategoryName(product.category)}</span>
                 <h3 class="product-name">${product.name}</h3>
-                <p class="product-farmer">by ${product.farmer}</p>
-                <div class="product-location">📍 ${product.location}</div>
+                <p class="product-farmer">от ${product.farmer}</p>
+                <div class="product-location">📍 ${product.location} (кликни за карта)</div>
                 <p style="color: #666; font-size: 0.9rem; margin-bottom: 0.5rem;">${product.description}</p>
                 <div class="product-price">${product.price}</div>
-                <button class="contact-btn" onclick="contactFarmer('${product.farmer}')">Contact Farmer</button>
+                <button class="contact-btn" onclick="contactFarmer('${product.farmer}')">Свържи се с фермера</button>
             </div>
         `;
         grid.appendChild(card);
     });
 }
 
-// Render farmers
+// Показване на фермери
 function renderFarmers() {
     const grid = document.getElementById('farmersGrid');
     
     farmers.forEach(farmer => {
         const card = document.createElement('div');
         card.className = 'farmer-card';
+        card.style.cursor = 'pointer';
+        card.onclick = () => openGoogleMaps(farmer.coords.lat, farmer.coords.lng, farmer.name);
+        
         const specialties = farmer.specialties.map(s => 
             s === 'eggs' ? '🥚' : s === 'meat' ? '🥩' : '🍯'
         ).join(' ');
+        
+        const specialtyNames = farmer.specialties.map(s => 
+            s === 'eggs' ? 'яйца' : s === 'meat' ? 'месо' : 'мед'
+        ).join(', ');
         
         card.innerHTML = `
             <div class="farmer-avatar">👨‍🌾</div>
             <h3 class="farmer-name">${farmer.name}</h3>
             <p style="color: #666; margin-bottom: 0.5rem;">${farmer.owner}</p>
-            <p class="farmer-specialty">${specialties} ${farmer.specialties.join(', ')}</p>
+            <p class="farmer-specialty">${specialties} ${specialtyNames}</p>
             <p style="color: #888; font-size: 0.9rem; margin-top: 0.5rem;">📍 ${farmer.location}</p>
+            <p style="color: #2d5016; font-size: 0.85rem; margin-top: 0.5rem; font-weight: 500;">(Кликни за място на картата)</p>
         `;
         grid.appendChild(card);
     });
 }
 
-// Filter by category
+// Помощна функция за превод на категории
+function getCategoryName(category) {
+    const names = {
+        'eggs': 'яйца',
+        'meat': 'месо',
+        'honey': 'мед'
+    };
+    return names[category] || category;
+}
+
+// Филтриране по категория
 function filterCategory(category) {
-    // Update active button
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.classList.remove('active');
     });
     event.target.classList.add('active');
     
-    // Filter products
     if (category === 'all') {
         renderProducts(products);
     } else {
@@ -166,7 +200,7 @@ function filterCategory(category) {
     }
 }
 
-// Search functionality
+// Търсене
 function filterProducts() {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
     const filtered = products.filter(product => 
@@ -177,15 +211,24 @@ function filterProducts() {
     renderProducts(filtered);
 }
 
-// Allow Enter key to search
+// Enter за търсене
 document.getElementById('searchInput')?.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') filterProducts();
 });
 
-// Contact farmer alert (replace with actual contact modal/form)
+// ОТВАРЯНЕ НА GOOGLE MAPS - основната нова функция
+function openGoogleMaps(lat, lng, label) {
+    // URL за Google Maps с координати
+    const mapsUrl = `https://www.google.com/maps?q=${lat},${lng}&ll=${lat},${lng}&z=15`;
+    
+    // Отваряне в нов таб
+    window.open(mapsUrl, '_blank');
+}
+
+// Контакт с фермер
 function contactFarmer(farmerName) {
     const farmer = farmers.find(f => f.name === farmerName);
     if (farmer) {
-        alert(`Contact ${farmer.owner} at ${farmer.phone}\nOr visit ${farmer.name} (${farmer.location})`);
+        alert(`Свържете се с ${farmer.owner}\nТелефон: ${farmer.phone}\nМестоположение: ${farmer.location}`);
     }
 }

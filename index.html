@@ -1,59 +1,116 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Local Harvest - Freshly Farmed Products Near You</title>
+    <title>Местна реколта - Прясна продукция от близки ферми</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <header class="hero">
         <nav class="navbar">
-            <div class="logo">🌾 LocalHarvest</div>
+            <div class="logo">🌾 Местна Реколта</div>
             <ul class="nav-links">
-                <li><a href="#products">Products</a></li>
-                <li><a href="#farmers">Farmers</a></li>
-                <li><a href="#about">About</a></li>
+                <li><a href="#products">Продукти</a></li>
+                <li><a href="#farmers">Фермери</a></li>
+                <li><a href="#about">За нас</a></li>
             </ul>
         </nav>
         
         <div class="hero-content">
-            <h1>Fresh from Local Farms</h1>
-            <p>Discover eggs, meat, and honey from farmers in your region</p>
+            <h1>Прясно от местни ферми</h1>
+            <p>Открийте яйца, месо и мед от фермери във вашия регион</p>
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Search products or farmers...">
-                <button onclick="filterProducts()">Search</button>
+                <input type="text" id="searchInput" placeholder="Търсете продукти или фермери...">
+                <button onclick="filterProducts()">Търсене</button>
             </div>
         </div>
     </header>
 
     <section class="filters">
-        <button class="filter-btn active" onclick="filterCategory('all')">All Products</button>
-        <button class="filter-btn" onclick="filterCategory('eggs')">🥚 Eggs</button>
-        <button class="filter-btn" onclick="filterCategory('meat')">🥩 Meat</button>
-        <button class="filter-btn" onclick="filterCategory('honey')">🍯 Honey</button>
+        <button class="filter-btn active" onclick="filterCategory('all')">Всички продукти</button>
+        <button class="filter-btn" onclick="filterCategory('eggs')">🥚 Яйца</button>
+        <button class="filter-btn" onclick="filterCategory('meat')">🥩 Месо</button>
+        <button class="filter-btn" onclick="filterCategory('honey')">🍯 Мед</button>
     </section>
 
     <main class="container" id="products">
-        <h2>Available Products</h2>
+        <h2>Налични продукти</h2>
         <div class="products-grid" id="productsGrid">
-            <!-- Products will be dynamically inserted here -->
+            <!-- Продуктите се зареждат динамично тук -->
         </div>
     </main>
 
     <section class="farmers-section" id="farmers">
-        <h2>Meet Our Farmers</h2>
+        <h2>Запознайте се с нашите фермери</h2>
         <div class="farmers-grid" id="farmersGrid">
-            <!-- Farmer cards inserted via JS -->
+            <!-- Карти на фермерите се зареждат тук -->
         </div>
     </section>
 
+    <section class="about-section" id="about">
+    <div class="about-container">
+        <div class="about-content">
+            <h2>Нашата мисия</h2>
+            <p class="lead-text">
+                "Местна реколта" не е просто платформа за пазаруване – тя е мост между хората, които произвеждат храна с грижа, и тези, които търсят истинско качество за своята трапеза.
+            </p>
+            
+            <div class="mission-grid">
+                <div class="mission-card">
+                    <div class="icon">🤝</div>
+                    <h3>Свързваме общности</h3>
+                    <p>Вярваме, че всяка общност заслужава да знае кой отглежда храната ѝ. Създадохме този проект, за да съкратим разстоянието между фермера и трапезата ви – не само в километри, но и в доверие.</p>
+                </div>
+                
+                <div class="mission-card">
+                    <div class="icon">🌱</div>
+                    <h3>Подкрепяме местното</h3>
+                    <p>Когато купувате от съседа си фермер, инвестирате в икономиката на вашия регион. Подпомагате семейни бизнеси, пазите традиции и гарантирате, че парите ви отиват при хора, които наистина се грижат за земята.</p>
+                </div>
+                
+                <div class="mission-card">
+                    <div class="icon">🥚</div>
+                    <h3>Истинска прозрачност</h3>
+                    <p>Знаете ли откъде идват яйцата ви? Или как е отгледано месото? Тук виждате лицата зад продукцията, можете да посетите фермите и да разберете историята на всяка храна. Без посредници, без тайни.</p>
+                </div>
+            </div>
+            
+            <div class="story-section">
+                <h3>Защо го правим?</h3>
+                <p>
+                    В свят, в който храната пътува хиляди километри преди да стигне до чинията ни, ние избрахме друго. Избрахме свежите яйца, събрани тази сутрин. Меда от кошерите в съседното село. Месото от животни, отгледани с внимание, а не като номера в индустриална ферма.
+                </p>
+                <p>
+                    Този проект е от хората за хората. Тук няма корпорации – има Иван от Зелена долина, който се грижи за кокошките си като за семейство. И Мария, чиито пчели събират нектар от полетата край вашия град. Това е платформа за тези, които ценят автентичния вкус и човешката връзка.
+                </p>
+            </div>
+            
+            <div class="values-banner">
+                <h3>Какво ни обединява</h3>
+                <ul class="values-list">
+                    <li><strong>🍃 Устойчивост</strong> – По-малко транспорт, по-малко пластмаса, повече уважение към природата</li>
+                    <li><strong>❤️ Човечност</strong> – Всяка покупка е ръкостискане с човека, който е отгледал храната ви</li>
+                    <li><strong>⚖️ Справедливост</strong> – Фермерите получават справедлива цена за труда си, а вие – справедлива цена за качество</li>
+                    <li><strong>🏘️ Съобщество</strong> – Силните местни общности започват от местната храна</li>
+                </ul>
+            </div>
+            
+            <div class="cta-section">
+                <p class="cta-text">Присъединете се към движението за по-добра храна и по-силни общности.</p>
+                <p class="cta-subtext">Намерете фермерите във вашия район и подкрепете тези, които хранят бъдещето ни.</p>
+            </div>
+            </div>
+        </div>
+    </section>
+
+
     <footer>
         <div class="footer-content">
-            <div class="logo">🌾 LocalHarvest</div>
-            <p>Connecting communities with local agriculture</p>
-            <p>&copy; 2026 LocalHarvest. All rights reserved.</p>
+            <div class="logo">🌾 Местна Реколта</div>
+            <p>Свързваме общности с местно земеделие</p>
+            <p>&copy; 2026 Местна Реколта. Всички права запазени.</p>
         </div>
     </footer>
 
