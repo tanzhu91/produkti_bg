@@ -463,6 +463,22 @@ h2 {
     font-size: 1.1rem;
 }
 
+/* Footer */
+footer {
+    background: var(--primary);
+    color: var(--white);
+    padding: 3rem 2rem;
+    text-align: center;
+}
+
+.footer-content .logo {
+    margin-bottom: 1rem;
+}
+
+
+
+
+
 @media (max-width: 1000px) {
     .values-list {
         grid-template-columns: repeat(2, 1fr);
@@ -477,23 +493,6 @@ h2 {
     }
 }
 
-
-
-
-
-
-/* Footer */
-footer {
-    background: var(--primary);
-    color: var(--white);
-    padding: 3rem 2rem;
-    text-align: center;
-}
-
-.footer-content .logo {
-    margin-bottom: 1rem;
-}
-
 /* Responsive */
 @media (max-width: 768px) {
     .hero-content h1 {
@@ -504,6 +503,7 @@ footer {
         display: none;
     }
     
+
     .search-box {
         flex-direction: column;
         border-radius: var(--radius);
@@ -513,8 +513,8 @@ footer {
     
     .search-box input {
         width: 100%;
-        padding: 0.75rem 1rem; /* Малко по-малко хоризонтално padding */
-        font-size: 0.95rem; /* Леко по-малък шрифт */
+        padding: 0.95rem 1rem; /* Малко по-малко хоризонтално padding */
+        font-size: 0.75rem; /* Леко по-малък шрифт */
         min-width: 0; /* Позволява свиване */
     }
     
