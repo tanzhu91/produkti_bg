@@ -5,7 +5,7 @@ const farmers = [
         name: "Ферма Зелена Долина",
         owner: "Иван Митев",
         location: "Северна област, 5 км",
-        coords: { lat: 42.6977, lng: 23.3219 }, // София примерно
+        coords: { lat: 42.99761124462213, lng: 27.195096719372046 }, // София примерно
         specialties: ["eggs", "honey"],
         phone: "0888-123-456"
     },
@@ -14,7 +14,7 @@ const farmers = [
         name: "Ранчо Слънчев Рид",
         owner: "Мария Петрова",
         location: "Източни хълмове, 8 км",
-        coords: { lat: 42.7339, lng: 25.4858 }, // примерни координати
+        coords: { lat: 42.956993676401254, lng: 27.280010745182384 },  // примерни координати
         specialties: ["meat", "eggs"],
         phone: "0888-789-012"
     },
@@ -32,7 +32,7 @@ const farmers = [
         name: "Месокомбинат Традиция",
         owner: "Елена Стоянова",
         location: "Южни полета, 12 км",
-        coords: { lat: 42.6368, lng: 23.3953 },
+        coords: { lat: 42.956993676401254, lng: 27.280010745182384 },
         specialties: ["meat"],
         phone: "0888-901-234"
     }
@@ -45,7 +45,7 @@ const products = [
         category: "eggs",
         farmer: "Ферма Зелена Долина",
         location: "Северна област, 5 км",
-        coords: { lat: 42.6977, lng: 23.3219 },
+        coords: { lat: 42.99761124462213, lng: 27.195096719372046 },
         price: "6.00 ев./десетка",
         emoji: "🥚",
         description: "Кокошки отгледани на паша"
@@ -56,7 +56,7 @@ const products = [
         category: "honey",
         farmer: "Пчелин Златен Кошер",
         location: "Западна долина, 3 км",
-        coords: { lat: 42.5103, lng: 23.3230 },
+        coords: { lat: 42.956993676401254, lng: 27.280010745182384 },
         price: "12.00 eв./буркан",
         emoji: "🍯",
         description: "Суров, нефилтриран местен мед"
@@ -67,7 +67,7 @@ const products = [
         category: "meat",
         farmer: "Месокомбинат Традиция",
         location: "Южни полета, 12 км",
-        coords: { lat: 42.6368, lng: 23.3953 },
+        coords: { lat: 42.956993676401254, lng: 27.280010745182384 },
         price: "15.00 eв./кг",
         emoji: "🥩",
         description: "Премиум телешко от пасищно отглеждане"
@@ -78,7 +78,7 @@ const products = [
         category: "meat",
         farmer: "Ранчо Слънчев Рид",
         location: "Източни хълмове, 8 км",
-        coords: { lat: 42.7339, lng: 25.4858 },
+        coords: { lat: 42.956993676401254, lng: 27.280010745182384 },
         price: "12.00 eв./кг",
         emoji: "🍗",
         description: "Без антибиотици, свободно отглеждане"
@@ -89,7 +89,7 @@ const products = [
         category: "honey",
         farmer: "Ферма Зелена Долина",
         location: "Северна област, 5 км",
-        coords: { lat: 42.6977, lng: 23.3219 },
+        coords: { lat: 42.956993676401254, lng: 27.280010745182384 },
         price: "10.00 eв./буркан",
         emoji: "🍯",
         description: "Сладък мед от детелинов цвят"
@@ -100,7 +100,7 @@ const products = [
         category: "eggs",
         farmer: "Ранчо Слънчев Рид",
         location: "Източни хълмове, 8 км",
-        coords: { lat: 42.7339, lng: 25.4858 },
+        coords: { lat: 42.956993676401254, lng: 27.280010745182384 },
         price: "5.50 eв./десетка",
         emoji: "🥚",
         description: "Кафяви яйца от местни породи"
