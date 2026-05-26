@@ -1,2 +1,2 @@
 # produkti.bg
-mestna-rekolta.netlify.app/
+mestna-rekolta.netlify.app
