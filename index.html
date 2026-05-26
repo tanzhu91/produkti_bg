@@ -10,110 +10,394 @@
 <body>
     <header class="hero">
         <nav class="navbar">
-            <div class="logo">🌾 Местна Реколта</div>
+            <div class="logo">🌾 М е с т н а Р е к о л т а</div>
             <ul class="nav-links">
-                <li><a href="#products">Продукти</a></li>
-                <li><a href="#farmers">Фермери</a></li>
-                <li><a href="#about">За нас</a></li>
+                <li><a href="#products" onclick="navigateTo('public')">Продукти</a></li>
+                <li><a href="#farmers" onclick="navigateTo('public')">Фермери</a></li>
+                <li><a href="#about" onclick="navigateTo('public')">За нас</a></li>
+                <li id="authSection">
+                    <a href="#" onclick="showLoginModal()">Вход за фермери</a> | 
+                    <a href="#" onclick="showRegisterModal()">Регистрация</a>
+                </li>
             </ul>
         </nav>
         
         <div class="hero-content">
             <h1>Прясно от местни ферми</h1>
-            <p>Открийте яйца, месо и мед от фермери във вашия регион</p>
+            <p>Открийте яйца, месо, мед и други еко продукти във вашия регион</p>
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Търсете продукти или фермери...">
+                <input type="text" id="searchInput" placeholder="Търсете продукти или категория...">
                 <button onclick="filterProducts()">Търсене</button>
             </div>
         </div>
     </header>
 
-    <section class="filters">
-        <button class="filter-btn active" onclick="filterCategory('all')">Всички продукти</button>
-        <button class="filter-btn" onclick="filterCategory('eggs')">🥚 Яйца</button>
-        <button class="filter-btn" onclick="filterCategory('meat')">🥩 Месо</button>
-        <button class="filter-btn" onclick="filterCategory('honey')">🍯 Мед</button>
+    <!-- Farmer Dashboard (показва се само ако си логнат) -->
+    <section id="farmerDashboard" class="dashboard-section" style="display: none;">
+        <div class="container">
+            <h2>Моят фермерски панел</h2>
+                <div class="dashboard-header farmer-welcome-card">
+                    <div class="farmer-welcome-text">
+                        <p>Добре дошли<br>
+                        <strong id="farmerName"></strong>!</p>
+                    </div>
+
+                    <div class="farmer-actions">
+                        <button class="farmer-edit-btn" onclick="showEditFarmerModal()">Редактирай профил</button>
+                        <button onclick="logout()" class="logout-btn">Изход</button>
+                    </div>
+                </div>
+            
+            <div class="add-product-form">
+                <h3>Добави нов продукт</h3>
+                <form id="productForm" onsubmit="addProduct(event)">
+                    <input type="text" id="prodName" placeholder="Име на продукта  (например говеждо, ябълки, сирене, мед)" required>
+                    <select id="category">
+                        <option value="" disabled selected>Избери категория</option>
+                        <option value="месо">Месо</option>
+                        <option value="яйца">Яйца</option>
+                        <option value="мед">Мед</option>
+                        <option value="млечни">Млечни</option>
+                        <option value="зеленчуци">Зеленчуци</option>
+                        <option value="плодове">Плодове</option>
+                        <option value="хляб">Хляб</option>
+                        <option value="билки">Билки</option>
+                        <option value="алкохол">Алкохол</option>
+                        <option value="ядки">Ядки</option>
+                        <option value="други">Други</option>
+                    </select>
+                    <input type="text" id="prodPrice" placeholder="Цена  (например 6.00 eв/kг, 2.00 eв/десетка)" required>
+                    <textarea id="prodDesc" placeholder="Описание  (например говеждо от тревно пасище, свежи домати от градината)" required></textarea>
+                    <div class="image-upload-field">
+                        <label for="prodImage">📷 Снимка на продукта</label>
+                        <input type="file" id="prodImage" accept="image/*">
+                    </div>
+                                        <!-- НОВО: Наличност -->
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 0;">
+                        <input type="checkbox" id="prodAvailable" checked style="width: auto;">
+                        <span>В наличност</span>
+                    </label>
+                    
+                    
+                    <button type="submit">Добави продукт</button>
+
+                </form>
+            </div>
+            
+            <h3>Моите продукти</h3>
+            <div id="myProducts" class="products-grid">
+                <!-- Тук се зареждат само продуктите на логнатия фермер -->
+            </div>
+            <br />
+            <div class="orders-section">
+                <h3>Получени поръчки</h3>
+                <div id="farmerOrders">
+                <p>Зареждане на поръчки...</p>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="filters" id="mainFilters">
+        <button class="filter-btn active" onclick="filterCategory('all', event)">Всички продукти</button>
+        <button class="filter-btn" onclick="filterCategory('eggs', event)">🥚 Яйца</button>
+        <button class="filter-btn" onclick="filterCategory('meat', event)">🥩 Месо</button>
+        <button class="filter-btn" onclick="filterCategory('honey', event)">🍯 Мед</button>
+        <button class="filter-btn" onclick="filterCategory('dairy', event)">🥛 Млечни</button>
+        <button class="filter-btn" onclick="filterCategory('vegetables', event)">🥒 Зеленчуци</button>
+        <button class="filter-btn" onclick="filterCategory('fruits', event)">🍎 Плодове</button>
+        <button class="filter-btn" onclick="filterCategory('bread', event)">🍞 Хляб</button>
+        <button class="filter-btn" onclick="filterCategory('other', event)">📦 Други</button>
     </section>
 
     <main class="container" id="products">
         <h2>Налични продукти</h2>
+
+        <!-- pagination TOP -->
+        <div id="paginationTop"></div>
+
         <div class="products-grid" id="productsGrid">
-            <!-- Продуктите се зареждат динамично тук -->
+            <!-- Продуктите се зареждат от Firebase -->
         </div>
+
+        <!-- optional pagination BOTTOM -->
+        <div id="paginationBottom"></div>
     </main>
 
     <section class="farmers-section" id="farmers">
         <h2>Запознайте се с нашите фермери</h2>
+        <div id="farmersPaginationTop" class="pagination"></div>
         <div class="farmers-grid" id="farmersGrid">
-            <!-- Карти на фермерите се зареждат тук -->
+        
+            <!-- Фермерите се зареждат от Firebase -->
         </div>
+        
     </section>
 
     <section class="about-section" id="about">
-    <div class="about-container">
-        <div class="about-content">
-            <h2>Нашата мисия</h2>
-            <p class="lead-text">
-                "Местна реколта" не е просто платформа за пазаруване – тя е мост между хората, които произвеждат храна с грижа, и тези, които търсят истинско качество за своята трапеза.
-            </p>
-            
-            <div class="mission-grid">
-                <div class="mission-card">
-                    <div class="icon">🤝</div>
-                    <h3>Свързваме общности</h3>
-                    <p>Вярваме, че всяка общност заслужава да знае кой отглежда храната ѝ. Създадохме този проект, за да съкратим разстоянието между фермера и трапезата ви – не само в километри, но и в доверие.</p>
-                </div>
-                
-                <div class="mission-card">
-                    <div class="icon">🌱</div>
-                    <h3>Подкрепяме местното</h3>
-                    <p>Когато купувате от съседа си фермер, инвестирате в икономиката на вашия регион. Подпомагате семейни бизнеси, пазите традиции и гарантирате, че парите ви отиват при хора, които наистина се грижат за земята.</p>
-                </div>
-                
-                <div class="mission-card">
-                    <div class="icon">🥚</div>
-                    <h3>Истинска прозрачност</h3>
-                    <p>Знаете ли откъде идват яйцата ви? Или как е отгледано месото? Тук виждате лицата зад продукцията, можете да посетите фермите и да разберете историята на всяка храна. Без посредници, без тайни.</p>
-                </div>
-            </div>
-            
-            <div class="story-section">
-                <h3>Защо го правим?</h3>
-                <p>
-                    В свят, в който храната пътува хиляди километри преди да стигне до чинията ни, ние избрахме друго. Избрахме свежите яйца, събрани тази сутрин. Меда от кошерите в съседното село. Месото от животни, отгледани с внимание, а не като номера в индустриална ферма.
+        <div class="about-container">
+            <div class="about-content">
+                <h2>Нашата мисия</h2>
+                <p class="lead-text">
+                    "М е с т н а Р е к о л т а" не е просто платформа за пазаруване - тя е мост между хората, които произвеждат храна с грижа, и тези, които търсят истинско качество за своята трапеза.
                 </p>
-                <p>
-                    Този проект е от хората за хората. Тук няма корпорации – има Иван от Зелена долина, който се грижи за кокошките си като за семейство. И Мария, чиито пчели събират нектар от полетата край вашия град. Това е платформа за тези, които ценят автентичния вкус и човешката връзка.
-                </p>
-            </div>
-            
-            <div class="values-banner">
-                <h3>Какво ни обединява</h3>
-                <ul class="values-list">
-                    <li><strong>🍃 Устойчивост</strong>  По-малко транспорт, по-малко пластмаса, повече уважение към природата</li>
-                    <li><strong>❤️ Човечност</strong>  Всяка покупка е ръкостискане с човека, който е отгледал храната ви</li>
-                    <li><strong>⚖️ Справедливост</strong>  Фермерите получават справедлива цена за труда си, а вие – справедлива цена за качество</li>
-                    <li><strong>🏘️ Съобщество</strong>  Силните местни общности започват от местната храна</li>
-                </ul>
-            </div>
-            
-            <div class="cta-section">
-                <p class="cta-text">Присъединете се към движението за по-добра храна и по-силни общности.</p>
-                <p class="cta-subtext">Намерете фермерите във вашия район и подкрепете тези, които хранят бъдещето ни.</p>
-            </div>
+                
+                <div class="mission-grid">
+                    <div class="mission-card">
+                        <div class="icon">🤝</div>
+                        <h3>Свързваме общности</h3>
+                        <p>Вярваме, че всяка общност заслужава да знае кой отглежда храната ѝ. Създадохме този проект, за да съкратим разстоянието между фермера и трапезата ви.</p>
+                    </div>
+                    
+                    <div class="mission-card">
+                        <div class="icon">🌱</div>
+                        <h3>Подкрепяме местното</h3>
+                        <p>Когато купувате от съседа си фермер, инвестирате в икономиката на вашия регион. Подпомагате семейни бизнеси и пазите традиции.</p>
+                    </div>
+                    
+                    <div class="mission-card">
+                        <div class="icon">🥚</div>
+                        <h3>Истинска прозрачност</h3>
+                        <p>Знаете ли откъде идват яйцата ви? Тук виждате лицата зад продукцията, можете да посетите фермите и да разберете историята на всяка храна.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginModal()">&times;</span>
+            <h2>Вход за фермери</h2>
+            <form id="loginForm" onsubmit="login(event)">
+                <p style="text-align:center; margin-top:10px;">
+                    <a href="#" onclick="showResetPassword(); return false;">
+                        Забравена парола?
+                    </a>
+                </p>
+                <input type="email" id="loginEmail" placeholder="Имейл" required>
+                <input type="password" id="loginPassword" placeholder="Парола" required>
+                <button type="submit">Вход</button>
+            </form>
+            <p style="margin-top: 1rem; text-align: center; color: #666;">
+                Нямате профил? Свържете се с администратора (+4915777987079).
+            </p>
+        </div>
+    </div>
+
+    <div id="resetModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeResetModal()">&times;</span>
+            <h2>Възстановяване на парола</h2>
+        
+            <form onsubmit="resetPassword(event)">
+                <input type="email" id="resetEmail" placeholder="Вашият имейл" required>
+                <button type="submit">Изпрати линк</button>
+            </form>
+
+            <p id="resetMessage" style="margin-top:10px; text-align:center;"></p>
+        </div>
+    </div>
+            <!-- Register Modal -->
+    <div id="registerModal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 500px; max-height: 90vh; overflow-y: auto;">
+            <span class="close" onclick="closeRegisterModal()">&times;</span>
+            <h2>Регистрация на фермер</h2>
+            <form id="registerForm" onsubmit="registerFarmer(event)">
+                <input type="text" id="regFarmName" placeholder="Село или град (напр. гр. Горна Оряховица)" required>
+                <input type="text" id="regOwner" placeholder="Име на собственика" required>
+                <input type="email" id="regEmail" placeholder="Имейл" required>
+                <input type="password" id="regPassword" placeholder="Парола (мин. 6 символа)" required minlength="6">
+                <input type="text" id="regLocation" placeholder="Разстояние (напр. 5 км от Плевен)" required>
+                <input type="tel" id="regPhone" placeholder="Телефон за връзка (напр. 0888123456)">
+
+                <!-- Farmer image upload (optional) -->
+                <label for="regFarmerImage">📷 Снимка на фермата / фермера (по избор)</label>
+                <input type="file" id="regFarmerImage" accept="image/*">
+                <div id="regFarmerPreview" style="margin-top:0.5rem; max-height:140px; overflow:hidden;"></div>
+
+                <div class="location-row">
+                    <input type="number" id="regLat" placeholder="Ширина" step="any" style="flex: 1;">
+                    <input type="number" id="regLng" placeholder="Дължина" step="any" style="flex: 1;">
+                </div>
+                <button type="button" onclick="getLocation()" style="background: var(--secondary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; margin-bottom: 1rem; width: 100%;">📍 Използвай моята локация</button>
+                <p id="locationStatus" style="font-size: 0.85rem; color: #888; margin-bottom: 1rem;"></p>
+                
+              
+                <button type="submit">Създай профил</button>
+                    </form>
+                        <p style="margin-top: 1rem; text-align: center; color: #666;">
+                            Вече имате профил? <a href="#" onclick="closeRegisterModal(); showLoginModal(); return false;" style="color: var(--primary);">Влезте тук</a>
+                        </p>
+                    </div>
+                </div>
+
+        <!-- Edit Product Modal -->
+    <div id="editModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h2>Редактиране на продукт</h2>
+            <form id="editForm" onsubmit="saveEdit(event)">
+                <input type="hidden" id="editProductId">
+                <label>Име на продукта:</label>
+                <input type="text" id="editName" required>
+                
+                <label>Категория:</label>
+                <input type="text" id="editCategory" placeholder="Категория" required>
+                
+                <label>Цена:</label>
+                <input type="text" id="editPrice" required>
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 0; margin-top: 0.5rem;">
+                    <input type="checkbox" id="editAvailable" style="width: auto;">
+                    <span>В наличност</span>
+                </label>
+                <label>Описание:</label>        
+                <textarea id="editDescription" required></textarea>
+                
+                <div class="image-upload-field">
+                    <label for="editImage">📷 Снимка на продукта (оставете празно за да запазите текущата)</label>
+                    <input type="file" id="editImage" accept="image/*">
+                    <div id="currentImageContainer" style="margin-top: 0.5rem; max-height: 150px; overflow: hidden;"></div>
+                </div>
+                
+                <button type="submit">Запази промените</button>
+            </form>
+        </div>
+    </div>
+
+
+        <!-- Order Modal -->
+    <div id="orderModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeOrderModal()">&times;</span>
+            <h2>Направи поръчка</h2>
+            <p id="orderProductInfo" style="color: #666; margin-bottom: 1rem;"></p>
+            <form id="orderForm" onsubmit="submitOrder(event)">
+                <input type="hidden" id="orderProductId">
+                <input type="hidden" id="orderFarmerId">
+                <input type="hidden" id="orderProductName">
+                <input type="text" id="orderName" placeholder="Вашето име" required>
+                <input type="tel" id="orderPhone" placeholder="Телефон за връзка" required>
+                <textarea id="orderMessage" placeholder="Брой, уточнения, удобна дата и час за приемане на поръчката ..." required></textarea>
+                <button type="submit">Изпрати запитване</button>
+            </form>
+        </div>
+    </div>
+
+
+     <!-- Edit farmer profile -->
+    <div id="editFarmerModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditFarmerModal()">&times;</span>
+            <h2>Редактиране на профил</h2>
+
+            <form onsubmit="saveFarmerEdit(event)">
+                <input type="text" id="editFarmName" placeholder="Име на фермата" required>
+                <input type="text" id="editOwner" placeholder="Собственик" required>
+                <input type="text" id="editLocation" placeholder="Локация" required>
+                <input type="tel" id="editPhone" placeholder="Телефон">
+
+
+                <input type="number" id="editLat" placeholder="Ширина" step="any">
+                <input type="number" id="editLng" placeholder="Дължина" step="any">
+
+                <!-- Edit farmer image upload (moved to bottom) -->
+                <div class="image-upload-field">
+                    <label for="editFarmerImage">📷 Снимка фермата / фермера (оставете празно за да запазите текущата)</label>
+                    <input type="file" id="editFarmerImage" accept="image/*">
+                    <div id="editFarmerPreview" style="margin-top:0.5rem; max-height:140px; overflow:hidden;"></div>
+                </div>
+
+                <button type="submit">Запази</button>
+            </form>
+        </div>
+    </div>
+
+
+
+    <!-- Farmer Contact Modal -->
+    <div id="farmerContactModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeFarmerContact()">&times;</span>
+            <h2>Контакт с фермера</h2>
+            <div id="farmerContactInfo" style="text-align: center; padding: 1rem;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">👨‍🌾</div>
+                <h3 id="contactFarmName" style="color: var(--primary); font-family: 'Playfair Display', serif; margin-bottom: 0.5rem;"></h3>
+                <p id="contactOwner" style="color: #666; font-size: 1.1rem; margin-bottom: 1.5rem;"></p>
+                
+                <div style="background: #f0efe9; padding: 1.5rem; border-radius: 8px; margin: 1rem 0; text-align: left;">
+                    <p style="margin-bottom: 0.75rem;"><strong>📧 Имейл:</strong> <span id="contactEmail"></span></p>
+                    <p style="margin-bottom: 0.75rem;"><strong>📞 Телефон:</strong> <span id="contactPhone"></span></p>
+                    <p><strong>📍 Локация:</strong> <span id="contactLocation"></span></p>
+                </div>
+                
+                <button class="contact-btn" onclick="closeFarmerContact()" style="max-width: 200px; margin-top: 1rem;">Затвори</button>
+            </div>
+        </div>
+    </div>
+
+    
+    <!--InfoModal-->
+    <div id="infoModal" class="modal" style="display:none;">
+        <div class="modal-content" style="max-width:600px;">
+            <span class="close" onclick="document.getElementById('infoModal').style.display='none'">&times;</span>
+            <h2 id="infoTitle"></h2>
+            <p id="infoText" style="white-space: pre-line;"></p>
+        </div>
+    </div>
 
 
     <footer>
         <div class="footer-content">
-            <div class="logo">🌾 Местна Реколта</div>
-            <p>Свързваме общности с местно земеделие</p>
-            <p>&copy; 2026 Местна Реколта. Всички права запазени.</p>
+            <div class="footer-main">
+                <div class="footer-section footer-about">
+                    <div class="footer-logo">🌾 МестнаРеколта</div>
+                    <p>Свързваме общности в района с местно земеделие. Открийте прясна продукция от фермери във вашия регион директно от производителя. Целта ни е да подкрепим малките фермери и да дадем на хората достъп до истинска, прясна храна без посредници.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Контакти</h4>
+                    <ul class="footer-links">
+                        <li><a href="mailto:mestna-rekolta@protonmail.com" title="mestna-rekolta@protonmail.com" class="email-link"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M502.3 190.8L327.4 338.6c-15.4 12.6-38.3 12.6-53.7 0L9.7 190.8C3.7 186 .2 179.5.2 172.5V96c0-35.3 28.7-64 64-64h383.9c35.3 0 64 28.7 64 64v76.5c0 7-3.5 13.5-9.8 18.3zM0 206.1v181.9C0 429.9 18.1 448 40.4 448h431.1c22.3 0 40.5-18.1 40.5-40.1V206.1l-201.7 165.7c-30.5 25-74.7 25-105.2 0L0 206.1z"/></svg> Имейл</a></li>
+                        <li><a href="tel:+4915777987079" class="phone-link"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M493.4 24.6l-104-24c-11.7-2.7-23.6 3.2-29 13.9l-48 112c-5.2 12.1-2.3 26 7.2 34.9l60.6 50.9c-34.7 69.3-90.5 125.1-159.8 159.8l-50.9-60.6c-8.9-9.5-22.8-12.4-34.9-7.2l-112 48c-10.7 5.4-16.6 17.3-13.9 29l24 104c2.8 12.1 13.6 20.7 25.9 20.7 256.5 0 464-207.5 464-464 0-12.3-8.6-23.1-20.7-25.9z"/></svg> Телефон</a></li>
+                        <li><a href="https://www.facebook.com" target="_blank" rel="noopener" class="facebook-link"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M279.1 288l14.3-92.6H208V133.3c0-25.4 12.3-50.1 52.3-50.1H298V6.3S268.4 0 240.1 0C141.1 0 89.6 54.2 89.6 153.3V195.4H24v92.6h65.6V512h100.2V288z"/></svg> Facebook</a></li>
+                        <li><a href="https://www.instagram.com" target="_blank" rel="noopener" class="instagram-link"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M224.1 141c-63.6 0-115 51.4-115 115 0 63.6 51.4 115 115 115 63.6 0 115-51.4 115-115 0-63.6-51.5-115-115-115zm0 190.5c-41.7 0-75.5-33.8-75.5-75.5s33.8-75.5 75.5-75.5 75.5 33.8 75.5 75.5-33.8 75.5-75.5 75.5zm146.4-194.3c0 14.9-12.1 27-27 27h-27c-14.9 0-27-12.1-27-27v-27c0-14.9 12.1-27 27-27h27c14.9 0 27 12.1 27 27v27zm76.1 27.2c-1.7-35.5-9.9-67.1-36.2-93.4-26.4-26.4-58-34.6-93.5-36.2-37-2.1-147.9-2.1-184.9 0-35.5 1.7-67.1 9.9-93.5 36.2-26.4 26.4-34.6 58-36.2 93.5-2.1 37-2.1 147.9 0 184.9 1.7 35.5 9.9 67.1 36.2 93.5 26.4 26.4 58 34.6 93.5 36.2 37 2.1 147.9 2.1 184.9 0 35.5-1.7 67.1-9.9 93.5-36.2 26.4-26.4 34.6-58 36.2-93.5 2.1-37 2.1-147.9 0-184.9zm-48.1 224c-7.8 19.7-23 35-42.6 42.6-29.5 11.7-99.5 9-132.9 9s-103.4 2.6-132.9-9c-19.7-7.8-35-23-42.6-42.6-11.7-29.5-9-99.5-9-132.9s-2.6-103.4 9-132.9c7.8-19.7 23-35 42.6-42.6 29.5-11.7 99.5-9 132.9-9s103.4-2.6 132.9 9c19.7 7.8 35 23 42.6 42.6 11.7 29.5 9 99.5 9 132.9s2.6 103.4-9 132.9z"/></svg> Instagram</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Бързи връзки</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="setView('public'); document.getElementById('products').scrollIntoView(); return false;">Продукти</a></li>
+                        <li><a href="#" onclick="setView('public'); document.getElementById('farmers').scrollIntoView(); return false;">Фермери</a></li>
+                        <li><a href="#" onclick="setView('public'); document.getElementById('about').scrollIntoView(); return false;">За нас</a></li>
+                        <li><a href="#" onclick="showLoginModal(); return false;">Вход за фермери</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Правна информация</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="showTerms(); return false;">Общи условия</a></li>
+                        <li><a href="#" onclick="showPrivacy(); return false;">Поверителност</a></li>
+                        <li><a href="#" onclick="showCookies(); return false;">Политика за бисквитки</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 МестнаРеколта. Всички права запазени.</p>
+                <p>Проект с нестопанска цел за подкрепа на местното земеделие. Не събираме такси от фермери или клиенти.</p>
+            </div>
         </div>
     </footer>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    
     <script src="script.js"></script>
 </body>
 </html>
